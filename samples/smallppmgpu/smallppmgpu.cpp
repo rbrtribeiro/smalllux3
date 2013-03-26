@@ -701,7 +701,7 @@ static void TracePhotonsThread(luxrays::RandomGenerator *rndGen, luxrays::Inters
 	startTime = luxrays::WallClockTime();
 	unsigned long long lastReHash = photonTraced;
 	// TODO: add a parameter to tune rehashing intervals
-	unsigned long long rehashInterval = 1000000;
+	unsigned long long rehashInterval = 1 << 20;
 	while (!boost::this_thread::interruption_requested()) {
 		// Trace the rays
 		device->PushRayBuffer(rayBuffer);
@@ -781,7 +781,7 @@ static void TracePhotonsThread(luxrays::RandomGenerator *rndGen, luxrays::Inters
 			std::cerr << "ReHashing HashGrid" << std::endl;
 			hashGrid->ReHash();
 			lastReHash = photonTraced;
-			rehashInterval *= 2;
+			//rehashInterval *= 2;
 			std::cerr << "ReHash interval: " << rehashInterval << std::endl;
 			std::cerr << "Tracing photon paths" << std::endl;
 		}
@@ -935,7 +935,7 @@ int main(int argc, char *argv[]) {
 				" -s [super-sampling count]" << std::endl <<
 				" -h <display this help and exit>" << std::endl;
 
-		std::string sceneFileName = "scenes/cornell/cornell.scn";
+		std::string sceneFileName = "scenes/kitchen/kitchen.scn";
 		float photonAlpha = 0.7f;
 		for (int i = 1; i < argc; i++) {
 			if (argv[i][0] == '-') {
